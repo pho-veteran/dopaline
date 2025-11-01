@@ -11,8 +11,12 @@ export default function CalendarPage() {
 
   if (status === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div>Loading...</div>
+      <div className="min-h-screen relative">
+        <div className="glass-bg-gradient" />
+        <div className="glass-bg-gradient-dark hidden dark:block" />
+        <div className="flex min-h-screen items-center justify-center relative z-10">
+          <div className="text-white">Loading...</div>
+        </div>
       </div>
     )
   }
@@ -23,11 +27,13 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 className="text-4xl font-bold mb-8">Calendar</h1>
+    <div className="min-h-screen relative">
+      <div className="glass-bg-gradient" />
+      <div className="glass-bg-gradient-dark hidden dark:block" />
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
+        <h1 className="text-4xl font-bold mb-8 text-white drop-shadow-lg">Calendar</h1>
         <CalendarView userId={session.user.id} />
-        <div className="pb-20" />
+        <div className="pb-24" />
         <Navigation />
       </div>
     </div>

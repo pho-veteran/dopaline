@@ -25,10 +25,10 @@ export function DailySummary({ focusDone, bodyDone }: DailySummaryProps) {
   }
 
   return (
-    <Card className="mt-6">
+    <Card className="mt-6 hover:scale-[1.01] transition-transform duration-300">
       <CardHeader>
-        <CardTitle>Daily Summary</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-white">Daily Summary</CardTitle>
+        <CardDescription className="text-white/80">
           {isPerfect
             ? "Congratulations! You completed both quests today."
             : "You haven't completed all quests yet. Keep going!"}
@@ -37,7 +37,7 @@ export function DailySummary({ focusDone, bodyDone }: DailySummaryProps) {
       <CardContent>
         {isPerfect ? (
           <div className="space-y-4">
-            <p className="text-lg italic text-center text-muted-foreground">
+            <p className="text-lg italic text-center text-white/90 drop-shadow-md">
               &ldquo;{quote || getRandomQuote()}&rdquo;
             </p>
             <Button onClick={handleShowMessage} variant="outline" className="w-full">

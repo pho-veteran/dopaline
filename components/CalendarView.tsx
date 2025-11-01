@@ -64,25 +64,25 @@ export function CalendarView({ userId: _userId }: CalendarViewProps) {
   }
 
   return (
-    <Card>
+    <Card className="hover:scale-[1.01] transition-transform duration-300">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="icon" onClick={previousMonth}>
+          <Button variant="ghost" size="icon" onClick={previousMonth} className="text-white hover:bg-white/20">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <CardTitle>{format(currentDate, "MMMM yyyy")}</CardTitle>
-          <Button variant="ghost" size="icon" onClick={nextMonth}>
+          <CardTitle className="text-white">{format(currentDate, "MMMM yyyy")}</CardTitle>
+          <Button variant="ghost" size="icon" onClick={nextMonth} className="text-white hover:bg-white/20">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         {loading ? (
-          <div className="text-center py-8">Loading...</div>
+          <div className="text-center py-8 text-white/80">Loading...</div>
         ) : (
           <div className="grid grid-cols-7 gap-2">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <div key={day} className="text-center text-sm font-medium text-muted-foreground py-2">
+              <div key={day} className="text-center text-sm font-medium text-white/80 py-2">
                 {day}
               </div>
             ))}
@@ -93,11 +93,11 @@ export function CalendarView({ userId: _userId }: CalendarViewProps) {
                 <div
                   key={day.toISOString()}
                   className={cn(
-                    "aspect-square flex items-center justify-center rounded-md text-sm font-medium transition-colors",
-                    status === "perfect" && "bg-blue-500 text-white",
-                    status === "partial" && "bg-orange-300 dark:bg-orange-700 text-white",
-                    status === "missed" && "border border-gray-300 dark:border-gray-600",
-                    isToday && "ring-2 ring-blue-500 ring-offset-2"
+                    "aspect-square flex items-center justify-center rounded-md text-sm font-medium transition-all duration-300 backdrop-blur-sm border border-white/20",
+                    status === "perfect" && "bg-blue-500/40 text-white shadow-lg glow-blue",
+                    status === "partial" && "bg-orange-500/40 text-white shadow-lg glow-orange",
+                    status === "missed" && "bg-white/10 text-white/60 hover:bg-white/20",
+                    isToday && "ring-2 ring-blue-400 ring-offset-2 scale-110"
                   )}
                 >
                   {format(day, "d")}

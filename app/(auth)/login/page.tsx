@@ -6,10 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function LoginPage() {
   return (
-    <Card className="shadow-lg">
+    <Card className="shadow-2xl hover:scale-[1.02] transition-transform duration-300">
       <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-3xl font-bold">Dopaline</CardTitle>
-        <CardDescription className="text-base">
+        <CardTitle className="text-3xl font-bold text-white drop-shadow-lg">Dopaline</CardTitle>
+        <CardDescription className="text-base text-white/80">
           Build discipline through daily quests
         </CardDescription>
       </CardHeader>

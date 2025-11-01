@@ -45,14 +45,14 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
   }
 
   const typeColors = {
-    focus: "bg-blue-50 border-blue-200 text-blue-900 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-100",
-    body: "bg-orange-50 border-orange-200 text-orange-900 dark:bg-orange-950 dark:border-orange-800 dark:text-orange-100",
+    focus: "bg-blue-500/20 border-blue-400/30 text-white backdrop-blur-sm",
+    body: "bg-orange-500/20 border-orange-400/30 text-white backdrop-blur-sm",
   }
 
   const difficultyColors = {
-    easy: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-    medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-    hard: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+    easy: "bg-green-500/30 text-white border-green-400/40 backdrop-blur-sm",
+    medium: "bg-yellow-500/30 text-white border-yellow-400/40 backdrop-blur-sm",
+    hard: "bg-red-500/30 text-white border-red-400/40 backdrop-blur-sm",
   }
 
   // Body quests show a simple exercise check UI
@@ -60,8 +60,8 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
     return (
       <Card
         className={cn(
-          "transition-all duration-300",
-          isDone && "opacity-75 scale-[0.98]",
+          "transition-all duration-300 hover:scale-[1.02] hover:shadow-xl",
+          isDone && "opacity-75 scale-[0.98] glow-blue",
           typeColors[type]
         )}
       >
@@ -77,7 +77,7 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
             disabled={isDone || isCompleting}
             className={cn(
               "w-full",
-              isDone && "bg-green-600 hover:bg-green-700"
+              isDone && "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg"
             )}
             size="lg"
           >
@@ -119,7 +119,7 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
           disabled={isDone || isCompleting}
           className={cn(
             "flex-1",
-            isDone && "bg-green-600 hover:bg-green-700"
+            isDone && "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg"
           )}
         >
           {isCompleting ? (

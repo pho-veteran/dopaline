@@ -14,12 +14,12 @@ export function StreakCounter({ streak }: StreakCounterProps) {
   return (
     <div className="w-full space-y-4">
       <div className="flex justify-between text-sm">
-        <span className="text-muted-foreground">Progress to next milestone</span>
-        <span className="font-medium">{streak} / {nextMilestone}</span>
+        <span className="text-white/80">Progress to next milestone</span>
+        <span className="font-medium text-white">{streak} / {nextMilestone}</span>
       </div>
       <div className="relative">
         <Progress value={progress} className="h-3" />
-        <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+        <div className="flex justify-between mt-2 text-xs text-white/60">
           {milestones.map((milestone) => (
             <span key={milestone}>{milestone}</span>
           ))}

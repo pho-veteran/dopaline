@@ -8,6 +8,7 @@ import { TitleBadge } from "@/components/TitleBadge"
 import { signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Navigation } from "@/components/Navigation"
+import { cn } from "@/lib/utils"
 
 export default function ProfilePage() {
   const { data: session, status } = useSession()
@@ -43,8 +44,12 @@ export default function ProfilePage() {
 
   if (status === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div>Loading...</div>
+      <div className="min-h-screen relative">
+        <div className="glass-bg-gradient" />
+        <div className="glass-bg-gradient-dark hidden dark:block" />
+        <div className="flex min-h-screen items-center justify-center relative z-10">
+          <div className="text-white">Loading...</div>
+        </div>
       </div>
     )
   }
@@ -63,11 +68,13 @@ export default function ProfilePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen relative">
+      <div className="glass-bg-gradient" />
+      <div className="glass-bg-gradient-dark hidden dark:block" />
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <div className="space-y-8">
           <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold">Profile</h1>
+            <h1 className="text-4xl font-bold text-white drop-shadow-lg">Profile</h1>
             <Button variant="outline" onClick={() => signOut({ callbackUrl: "/login" })}>
               Sign Out
             </Button>
@@ -75,7 +82,7 @@ export default function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Your Progress</CardTitle>
+              <CardTitle className="text-white">Your Progress</CardTitle>
             </CardHeader>
             <CardContent>
               <TitleBadge title={title} streak={streak} />
@@ -84,27 +91,28 @@ export default function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Title Progression</CardTitle>
+              <CardTitle className="text-white">Title Progression</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {titleMilestones.map((milestone) => (
                   <div
                     key={milestone.streak}
-                    className={`flex items-center justify-between p-4 rounded-lg border ${
+                    className={cn(
+                      "flex items-center justify-between p-4 rounded-lg backdrop-blur-sm border border-white/20 transition-all",
                       streak >= milestone.streak
-                        ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
-                        : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                    }`}
+                        ? "bg-green-500/20 text-white shadow-lg"
+                        : "bg-white/10 text-white/80"
+                    )}
                   >
                     <div>
                       <p className="font-semibold">{milestone.title}</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-white/60">
                         {milestone.streak} day{milestone.streak !== 1 ? "s" : ""}
                       </p>
                     </div>
                     {streak >= milestone.streak && (
-                      <span className="text-green-600 dark:text-green-400">✓ Achieved</span>
+                      <span className="text-green-300">✓ Achieved</span>
                     )}
                   </div>
                 ))}
@@ -115,15 +123,15 @@ export default function ProfilePage() {
           {session.user && (
             <Card>
               <CardHeader>
-                <CardTitle>Account</CardTitle>
+                <CardTitle className="text-white">Account</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <p>
+                  <p className="text-white/90">
                     <span className="font-medium">Email:</span> {session.user.email}
                   </p>
                   {session.user.name && (
-                    <p>
+                    <p className="text-white/90">
                       <span className="font-medium">Name:</span> {session.user.name}
                     </p>
                   )}
@@ -132,7 +140,7 @@ export default function ProfilePage() {
             </Card>
           )}
         </div>
-        <div className="pb-20" />
+        <div className="pb-24" />
         <Navigation />
       </div>
     </div>

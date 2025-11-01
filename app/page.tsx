@@ -8,6 +8,7 @@ import { TitleBadge } from "@/components/TitleBadge"
 import { StreakCounter } from "@/components/StreakCounter"
 import { DailySummary } from "@/components/DailySummary"
 import { Navigation } from "@/components/Navigation"
+import { Card } from "@/components/ui/card"
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
@@ -71,8 +72,12 @@ export default function Dashboard() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div>Loading...</div>
+      <div className="min-h-screen relative">
+        <div className="glass-bg-gradient" />
+        <div className="glass-bg-gradient-dark hidden dark:block" />
+        <div className="flex min-h-screen items-center justify-center relative z-10">
+          <div className="text-white">Loading...</div>
+        </div>
       </div>
     )
   }
@@ -82,25 +87,27 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen relative">
+      <div className="glass-bg-gradient" />
+      <div className="glass-bg-gradient-dark hidden dark:block" />
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-2">Welcome back</h1>
-            <p className="text-muted-foreground">Continue your journey to discipline</p>
+            <h1 className="text-4xl font-bold mb-2 text-white drop-shadow-lg">Welcome back</h1>
+            <p className="text-white/80">Continue your journey to discipline</p>
           </div>
 
           <TitleBadge title={title} streak={streak} />
 
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm">
+          <Card className="p-6">
             <StreakCounter streak={streak} />
-          </div>
+          </Card>
 
           <QuestList userId={session.user.id} />
 
           <DailySummary focusDone={focusDone} bodyDone={bodyDone} />
         </div>
-        <div className="pb-20" />
+        <div className="pb-24" />
         <Navigation />
       </div>
     </div>
