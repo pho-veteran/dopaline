@@ -150,7 +150,7 @@ export async function rerollQuest(
 
 export async function completeQuest(
   userId: string,
-  questType: "focus" | "body",
+  questType: "focus" | "body" | "noNut",
   date: Date = getTodayUTC()
 ) {
   const normalizedDate = normalizeDate(date)
@@ -168,10 +168,21 @@ export async function completeQuest(
     throw new Error("Daily log not found")
   }
 
-  const isAlreadyDone = questType === "focus" ? dailyLog.focusDone : dailyLog.bodyDone
+  const isAlreadyDone = questType === "focus" 
+    ? dailyLog.focusDone 
+    : questType === "body"
+    ? dailyLog.bodyDone
+    : dailyLog.noNutDone
+  
   if (isAlreadyDone) {
     return dailyLog
   }
+
+  const updateField = questType === "focus" 
+    ? "focusDone"
+    : questType === "body"
+    ? "bodyDone"
+    : "noNutDone"
 
   const updated = await prisma.dailyLog.update({
     where: {
@@ -181,13 +192,13 @@ export async function completeQuest(
       },
     },
     data: {
-      [questType === "focus" ? "focusDone" : "bodyDone"]: true,
+      [updateField]: true,
     },
   })
 
-  // Check if both quests are done, then update streak
-  const bothDone = updated.focusDone && updated.bodyDone
-  if (bothDone) {
+  // Check if all quests are done, then update streak
+  const allDone = updated.focusDone && updated.bodyDone && updated.noNutDone
+  if (allDone) {
     const { updateStreak } = await import("./streaks")
     await updateStreak(userId)
   }

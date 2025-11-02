@@ -5,7 +5,7 @@ import { completeQuest } from "@/lib/quests"
 import { z } from "zod"
 
 const completeQuestSchema = z.object({
-  questType: z.enum(["focus", "body"]),
+  questType: z.enum(["focus", "body", "noNut"]),
   date: z.string().optional(),
 })
 

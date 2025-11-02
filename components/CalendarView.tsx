@@ -12,6 +12,7 @@ interface DailyLog {
   date: string
   focusDone: boolean
   bodyDone: boolean
+  noNutDone: boolean
 }
 
 interface CalendarViewProps {
@@ -50,8 +51,8 @@ export function CalendarView({ userId: _userId }: CalendarViewProps) {
   const getDayStatus = (day: Date) => {
     const log = dailyLogs.find((l) => isSameDay(new Date(l.date), day))
     if (!log) return "missed"
-    if (log.focusDone && log.bodyDone) return "perfect"
-    if (log.focusDone || log.bodyDone) return "partial"
+    if (log.focusDone && log.bodyDone && log.noNutDone) return "perfect"
+    if (log.focusDone || log.bodyDone || log.noNutDone) return "partial"
     return "missed"
   }
 
@@ -64,25 +65,25 @@ export function CalendarView({ userId: _userId }: CalendarViewProps) {
   }
 
   return (
-    <Card className="hover:scale-[1.01] transition-transform duration-300">
+    <Card className="pixel-card-dark pixel-border hover:scale-[1.01] transition-transform duration-300">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="icon" onClick={previousMonth} className="text-white hover:bg-white/20">
+          <Button variant="pixel" size="icon" onClick={previousMonth} className="text-white font-pixel">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <CardTitle className="text-white">{format(currentDate, "MMMM yyyy")}</CardTitle>
-          <Button variant="ghost" size="icon" onClick={nextMonth} className="text-white hover:bg-white/20">
+          <CardTitle className="text-white font-pixel">{format(currentDate, "MMMM yyyy")}</CardTitle>
+          <Button variant="pixel" size="icon" onClick={nextMonth} className="text-white font-pixel">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         {loading ? (
-          <div className="text-center py-8 text-white/80">Loading...</div>
+          <div className="text-center py-8 text-white/80 font-pixel">Loading...</div>
         ) : (
           <div className="grid grid-cols-7 gap-2">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <div key={day} className="text-center text-sm font-medium text-white/80 py-2">
+              <div key={day} className="text-center text-sm font-medium text-white/80 py-2 font-pixel">
                 {day}
               </div>
             ))}
@@ -93,11 +94,11 @@ export function CalendarView({ userId: _userId }: CalendarViewProps) {
                 <div
                   key={day.toISOString()}
                   className={cn(
-                    "aspect-square flex items-center justify-center rounded-md text-sm font-medium transition-all duration-300 backdrop-blur-sm border border-white/20",
-                    status === "perfect" && "bg-blue-500/40 text-white shadow-lg glow-blue",
-                    status === "partial" && "bg-orange-500/40 text-white shadow-lg glow-orange",
-                    status === "missed" && "bg-white/10 text-white/60 hover:bg-white/20",
-                    isToday && "ring-2 ring-blue-400 ring-offset-2 scale-110"
+                    "aspect-square flex items-center justify-center text-sm font-medium transition-all duration-300 font-pixel pixel-border-sm",
+                    status === "perfect" && "bg-blue-500 text-white pixel-border-light",
+                    status === "partial" && "bg-orange-500 text-white pixel-border-light",
+                    status === "missed" && "bg-white/10 text-white/60 border-white/30 hover:bg-white/20",
+                    isToday && "ring-4 ring-blue-400 ring-offset-2 scale-110"
                   )}
                 >
                   {format(day, "d")}

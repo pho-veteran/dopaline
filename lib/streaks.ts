@@ -2,17 +2,29 @@ import { prisma } from "./prisma"
 import { normalizeDate, getTodayUTC } from "./dates"
 
 const TITLE_MILESTONES = [
-  { streak: 0, title: "Initiate" },
-  { streak: 1, title: "Initiate" },
-  { streak: 3, title: "Self-Controller" },
-  { streak: 7, title: "Discipline Novice" },
-  { streak: 14, title: "Focus Warrior" },
-  { streak: 21, title: "Mind-Body Knight" },
+  { streak: 0, title: "Weakling" },
+  { streak: 1, title: "Pathetic Attempt" },
+  { streak: 3, title: "Still Struggling" },
+  { streak: 7, title: "Barely Trying" },
+  { streak: 14, title: "Self-Controller" },
+  { streak: 21, title: "Discipline Novice" },
   { streak: 30, title: "Dopamine Monk" },
+  { streak: 45, title: "Willpower Disciple" },
+  { streak: 60, title: "Ascetic Apprentice" },
+  { streak: 90, title: "Self-Mastery Student" },
+  { streak: 120, title: "Discipline Adept" },
+  { streak: 150, title: "Mind-Body Sage" },
+  { streak: 180, title: "Dopamine Warrior" },
+  { streak: 210, title: "Willpower Champion" },
+  { streak: 240, title: "Ascetic Master" },
+  { streak: 270, title: "Self-Mastery Grandmaster" },
+  { streak: 300, title: "Discipline Legend" },
+  { streak: 330, title: "Transcendent Monk" },
+  { streak: 365, title: "Dopamine God" },
 ]
 
 export function getTitleForStreak(streak: number): string {
-  let title = "Initiate"
+  let title = "Weakling"
   for (const milestone of TITLE_MILESTONES) {
     if (streak >= milestone.streak) {
       title = milestone.title
@@ -31,6 +43,7 @@ export async function calculateStreak(userId: string): Promise<number> {
         where: {
           focusDone: true,
           bodyDone: true,
+          noNutDone: true,
         },
         orderBy: {
           date: "desc",

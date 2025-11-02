@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { QuestCard } from "./QuestCard"
+import { NoNutCard } from "./NoNutCard"
 
 interface Quest {
   id: string
@@ -13,6 +14,7 @@ interface DailyLog {
   id: string
   focusDone: boolean
   bodyDone: boolean
+  noNutDone: boolean
   focusRerolled: boolean
   bodyRerolled: boolean
 }
@@ -50,7 +52,7 @@ export function QuestList({ userId: _userId }: QuestListProps) {
     fetchQuests()
   }, [])
 
-  const handleComplete = async (questType: "focus" | "body") => {
+  const handleComplete = async (questType: "focus" | "body" | "noNut") => {
     try {
       const response = await fetch("/api/daily-log/complete", {
         method: "POST",
@@ -97,22 +99,28 @@ export function QuestList({ userId: _userId }: QuestListProps) {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <QuestCard
-        quest={focusQuest}
-        type="focus"
-        isDone={dailyLog.focusDone}
-        isRerolled={dailyLog.focusRerolled}
-        onComplete={() => handleComplete("focus")}
-        onReroll={() => handleReroll("focus")}
-      />
-      <QuestCard
-        quest={bodyQuest}
-        type="body"
-        isDone={dailyLog.bodyDone}
-        isRerolled={false}
-        onComplete={() => handleComplete("body")}
-        onReroll={() => handleReroll("body")}
+    <div className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-2">
+        <QuestCard
+          quest={focusQuest}
+          type="focus"
+          isDone={dailyLog.focusDone}
+          isRerolled={dailyLog.focusRerolled}
+          onComplete={() => handleComplete("focus")}
+          onReroll={() => handleReroll("focus")}
+        />
+        <QuestCard
+          quest={bodyQuest}
+          type="body"
+          isDone={dailyLog.bodyDone}
+          isRerolled={false}
+          onComplete={() => handleComplete("body")}
+          onReroll={() => handleReroll("body")}
+        />
+      </div>
+      <NoNutCard
+        isDone={dailyLog.noNutDone}
+        onComplete={() => handleComplete("noNut")}
       />
     </div>
   )

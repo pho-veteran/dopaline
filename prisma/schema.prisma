@@ -13,7 +13,7 @@ model User {
   name              String?
   image             String?     // Google profile picture URL
   emailVerified     DateTime?
-  title             String      @default("Initiate")
+  title             String      @default("Weakling")
   streak            Int         @default(0)
   lastCompletedDate DateTime?
   dailyLogs         DailyLog[]
@@ -69,6 +69,7 @@ model DailyLog {
   bodyQuestId   String   @db.ObjectId
   focusDone     Boolean  @default(false)
   bodyDone      Boolean  @default(false)
+  noNutDone     Boolean  @default(false)
   focusRerolled Boolean  @default(false)
   bodyRerolled  Boolean  @default(false)
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)

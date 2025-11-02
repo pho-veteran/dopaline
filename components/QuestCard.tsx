@@ -50,9 +50,9 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
   }
 
   const difficultyColors = {
-    easy: "bg-green-500/30 text-white border-green-400/40 backdrop-blur-sm",
-    medium: "bg-yellow-500/30 text-white border-yellow-400/40 backdrop-blur-sm",
-    hard: "bg-red-500/30 text-white border-red-400/40 backdrop-blur-sm",
+    easy: "bg-green-500 text-white",
+    medium: "bg-yellow-500 text-white",
+    hard: "bg-red-500 text-white",
   }
 
   // Body quests show a simple exercise check UI
@@ -60,14 +60,13 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
     return (
       <Card
         className={cn(
-          "transition-all duration-300 hover:scale-[1.02] hover:shadow-xl",
-          isDone && "opacity-75 scale-[0.98] glow-blue",
-          typeColors[type]
+          "pixel-card-dark pixel-border transition-all duration-300 hover:scale-[1.02]",
+          isDone && "opacity-75 scale-[0.98]"
         )}
       >
         <CardHeader>
-          <CardTitle className="text-lg">Exercise Check</CardTitle>
-          <CardDescription className="text-base mt-2">
+          <CardTitle className="text-lg font-pixel text-white">Exercise Check</CardTitle>
+          <CardDescription className="text-base mt-2 text-white/80">
             Did you exercise today?
           </CardDescription>
         </CardHeader>
@@ -75,10 +74,8 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
           <Button
             onClick={handleComplete}
             disabled={isDone || isCompleting}
-            className={cn(
-              "w-full",
-              isDone && "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg"
-            )}
+            variant={isDone ? "pixelSuccess" : "pixel"}
+            className="w-full font-pixel"
             size="lg"
           >
             {isCompleting ? (
@@ -97,30 +94,30 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
   return (
     <Card
       className={cn(
-        "transition-all duration-300",
-        isDone && "opacity-75 scale-[0.98]",
-        typeColors[type]
+        "pixel-card-dark pixel-border transition-all duration-300",
+        isDone && "opacity-75 scale-[0.98]"
       )}
     >
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg capitalize">{type} Quest</CardTitle>
+          <CardTitle className="text-lg font-pixel text-white capitalize">{type} Quest</CardTitle>
           {quest && (
-            <Badge className={cn("capitalize", difficultyColors[quest.difficulty as keyof typeof difficultyColors])}>
+            <Badge variant="pixel" className={cn(
+              "capitalize font-pixel",
+              difficultyColors[quest.difficulty as keyof typeof difficultyColors]
+            )}>
               {quest.difficulty}
             </Badge>
           )}
         </div>
-        <CardDescription className="text-base mt-2">{quest?.description || "Loading..."}</CardDescription>
+        <CardDescription className="text-base mt-2 text-white/90">{quest?.description || "Loading..."}</CardDescription>
       </CardHeader>
       <CardContent className="flex gap-2">
         <Button
           onClick={handleComplete}
           disabled={isDone || isCompleting}
-          className={cn(
-            "flex-1",
-            isDone && "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg"
-          )}
+          variant={isDone ? "pixelSuccess" : "pixel"}
+          className="flex-1 font-pixel"
         >
           {isCompleting ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -132,9 +129,10 @@ export function QuestCard({ quest, type, isDone, isRerolled, onComplete, onRerol
         <Button
           onClick={handleReroll}
           disabled={isDone || isRerolled || isRerolling}
-          variant="outline"
+          variant="pixel"
           size="icon"
           title="Reroll quest"
+          className="font-pixel"
         >
           {isRerolling ? (
             <Loader2 className="h-4 w-4 animate-spin" />

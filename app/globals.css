@@ -55,6 +55,14 @@
   --color-ring: hsl(var(--ring));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-pixel);
+  
+  /* Pixel Art Colors */
+  --pixel-border-dark: #1a1a1a;
+  --pixel-border-light: #ffffff;
+  --pixel-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+  --pixel-shadow-sm: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  --pixel-shadow-lg: 6px 6px 0px rgba(0, 0, 0, 0.3);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -231,4 +239,132 @@ body {
 .backdrop-blur-glass-xl {
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* Pixel Art Design System */
+.font-pixel {
+  font-family: var(--font-pixel), monospace;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Pixel Borders */
+.pixel-border {
+  border: 3px solid var(--pixel-border-dark);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow);
+}
+
+.pixel-border-sm {
+  border: 2px solid var(--pixel-border-dark);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow-sm);
+}
+
+.pixel-border-lg {
+  border: 4px solid var(--pixel-border-dark);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow-lg);
+}
+
+.pixel-border-light {
+  border: 3px solid var(--pixel-border-light);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow);
+}
+
+/* Pixel Cards */
+.pixel-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid var(--pixel-border-dark);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow);
+  image-rendering: pixelated;
+}
+
+.pixel-card-dark {
+  background: rgba(26, 26, 26, 0.95);
+  border: 3px solid var(--pixel-border-light);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow);
+  image-rendering: pixelated;
+}
+
+/* Pixel Buttons */
+.pixel-button {
+  font-family: var(--font-pixel), monospace;
+  border: 3px solid var(--pixel-border-dark);
+  border-radius: 0;
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s ease;
+  image-rendering: pixelated;
+}
+
+.pixel-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: var(--pixel-shadow-sm);
+}
+
+.pixel-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.pixel-button-primary {
+  background: #3b82f6;
+  color: white;
+  border-color: #1e40af;
+}
+
+.pixel-button-primary:hover {
+  background: #2563eb;
+}
+
+.pixel-button-success {
+  background: #10b981;
+  color: white;
+  border-color: #047857;
+}
+
+.pixel-button-success:hover {
+  background: #059669;
+}
+
+/* Pixel Progress Bar */
+.pixel-progress {
+  border: 2px solid var(--pixel-border-dark);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.pixel-progress-fill {
+  height: 100%;
+  border-right: 2px solid var(--pixel-border-dark);
+  background: linear-gradient(to bottom, #3b82f6, #2563eb);
+  image-rendering: pixelated;
+  transition: width 0.3s ease;
+}
+
+/* Pixel Text */
+.pixel-text {
+  font-family: var(--font-pixel), monospace;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+}
+
+.pixel-text-outline {
+  font-family: var(--font-pixel), monospace;
+  -webkit-text-stroke: 2px var(--pixel-border-dark);
+  text-stroke: 2px var(--pixel-border-dark);
+}
+
+/* Safe area for bottom navigation */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Pixel border top */
+.pixel-border-t {
+  border-top: 4px solid var(--pixel-border-light);
 }

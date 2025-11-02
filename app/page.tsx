@@ -2,22 +2,25 @@
 
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { QuestList } from "@/components/QuestList"
 import { TitleBadge } from "@/components/TitleBadge"
 import { StreakCounter } from "@/components/StreakCounter"
 import { DailySummary } from "@/components/DailySummary"
-import { Navigation } from "@/components/Navigation"
+import { CalendarView } from "@/components/CalendarView"
+import { BottomNavigation } from "@/components/BottomNavigation"
 import { Card } from "@/components/ui/card"
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [streak, setStreak] = useState(0)
-  const [title, setTitle] = useState("Initiate")
+  const [title, setTitle] = useState("Weakling")
   const [focusDone, setFocusDone] = useState(false)
   const [bodyDone, setBodyDone] = useState(false)
+  const [noNutDone, setNoNutDone] = useState(false)
   const [loading, setLoading] = useState(true)
+  const lastUserIdRef = useRef<string | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -26,11 +29,14 @@ export default function Dashboard() {
   }, [status, router])
 
   useEffect(() => {
-    if (session?.user?.id) {
+    // Only fetch when user ID actually changes, not on every session object update
+    const userId = session?.user?.id
+    if (userId && userId !== lastUserIdRef.current) {
+      lastUserIdRef.current = userId
       fetchStreak()
       fetchQuests()
     }
-  }, [session])
+  }, [session?.user?.id])
 
   useEffect(() => {
     const handleQuestCompleted = () => {
@@ -62,6 +68,7 @@ export default function Dashboard() {
         const data = await response.json()
         setFocusDone(data.dailyLog?.focusDone || false)
         setBodyDone(data.dailyLog?.bodyDone || false)
+        setNoNutDone(data.dailyLog?.noNutDone || false)
       }
     } catch (err) {
       console.error("Error fetching quests:", err)
@@ -76,7 +83,16 @@ export default function Dashboard() {
         <div className="glass-bg-gradient" />
         <div className="glass-bg-gradient-dark hidden dark:block" />
         <div className="flex min-h-screen items-center justify-center relative z-10">
-          <div className="text-white">Loading...</div>
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative">
+              <div className="w-16 h-16 pixel-border-lg bg-white/10 border-white/30">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-500 pixel-border-sm animate-pulse" />
+                </div>
+              </div>
+            </div>
+            <p className="text-white font-pixel pixel-text text-xl">Loading...</p>
+          </div>
         </div>
       </div>
     )
@@ -93,22 +109,27 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-2 text-white drop-shadow-lg">Welcome back</h1>
-            <p className="text-white/80">Continue your journey to discipline</p>
+            <h1 className="text-4xl font-bold mb-2 text-white drop-shadow-lg font-pixel pixel-text">Welcome back</h1>
+            <p className="text-white/80 font-pixel">Continue your journey to discipline</p>
           </div>
 
           <TitleBadge title={title} streak={streak} />
 
-          <Card className="p-6">
+          <Card className="p-6 pixel-card-dark pixel-border">
             <StreakCounter streak={streak} />
           </Card>
 
           <QuestList userId={session.user.id} />
 
-          <DailySummary focusDone={focusDone} bodyDone={bodyDone} />
+          <DailySummary focusDone={focusDone} bodyDone={bodyDone} noNutDone={noNutDone} />
+
+          <div className="mt-8">
+            <h2 className="text-3xl font-bold mb-6 text-white drop-shadow-lg text-center font-pixel pixel-text">Calendar</h2>
+            <CalendarView userId={session.user.id} />
+          </div>
         </div>
         <div className="pb-24" />
-        <Navigation />
+        <BottomNavigation />
       </div>
     </div>
   )
