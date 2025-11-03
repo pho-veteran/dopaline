@@ -13,6 +13,7 @@ interface DailyLog {
   focusDone: boolean
   bodyDone: boolean
   noNutDone: boolean
+  completed: boolean
 }
 
 interface CalendarViewProps {
@@ -51,7 +52,7 @@ export function CalendarView({ userId: _userId }: CalendarViewProps) {
   const getDayStatus = (day: Date) => {
     const log = dailyLogs.find((l) => isSameDay(new Date(l.date), day))
     if (!log) return "missed"
-    if (log.focusDone && log.bodyDone && log.noNutDone) return "perfect"
+    if (log.completed) return "perfect"  // Use the completed field for marked dates
     if (log.focusDone || log.bodyDone || log.noNutDone) return "partial"
     return "missed"
   }

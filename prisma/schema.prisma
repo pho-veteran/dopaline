@@ -66,17 +66,17 @@ model DailyLog {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   date          DateTime
   focusQuestId  String   @db.ObjectId
-  bodyQuestId   String   @db.ObjectId
   focusDone     Boolean  @default(false)
   bodyDone      Boolean  @default(false)
   noNutDone     Boolean  @default(false)
+  completed     Boolean  @default(false)  // True when all three quests are completed
   focusRerolled Boolean  @default(false)
-  bodyRerolled  Boolean  @default(false)
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String   @db.ObjectId
   createdAt     DateTime @default(now())
   
   @@unique([userId, date])
+  @@index([userId, completed, date])
 }
 
 model Quest {

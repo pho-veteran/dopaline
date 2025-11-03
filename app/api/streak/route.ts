@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { calculateStreak } from "@/lib/streaks"
+import { calculateStreak, getTitleForStreak } from "@/lib/streaks"
 import { prisma } from "@/lib/prisma"
 
 export async function GET() {
@@ -22,10 +22,11 @@ export async function GET() {
 
     // Recalculate streak to ensure accuracy
     const streak = await calculateStreak(session.user.id)
+    const title = getTitleForStreak(streak)
 
     return NextResponse.json({
       streak,
-      title: user.title,
+      title,
     })
   } catch (error) {
     console.error("Error fetching streak:", error)

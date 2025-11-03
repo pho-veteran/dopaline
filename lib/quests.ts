@@ -35,9 +35,10 @@ export async function getQuestsForUser(userId: string, date: Date = getTodayUTC(
     }
   }
 
+  // Fetch focus quest and the single body quest (dynamically, since we don't store it)
   const [focusQuest, bodyQuest] = await Promise.all([
     prisma.quest.findUnique({ where: { id: dailyLog.focusQuestId } }),
-    prisma.quest.findUnique({ where: { id: dailyLog.bodyQuestId } }),
+    prisma.quest.findFirst({ where: { type: "body" } }),
   ])
 
   return {
@@ -73,7 +74,6 @@ export async function generateDailyQuests(userId: string, date: Date) {
       userId,
       date,
       focusQuestId: randomFocus.id,
-      bodyQuestId: bodyQuest.id, // Always use the same placeholder body quest
     },
   })
 
@@ -184,6 +184,14 @@ export async function completeQuest(
     ? "bodyDone"
     : "noNutDone"
 
+  // Check if completing this quest will result in all quests being done
+  const willBeAllDone = questType === "focus"
+    ? true && dailyLog.bodyDone && dailyLog.noNutDone
+    : questType === "body"
+    ? dailyLog.focusDone && true && dailyLog.noNutDone
+    : dailyLog.focusDone && dailyLog.bodyDone && true
+
+  // Update the field and completed status in one operation if all will be done
   const updated = await prisma.dailyLog.update({
     where: {
       userId_date: {
@@ -193,12 +201,12 @@ export async function completeQuest(
     },
     data: {
       [updateField]: true,
+      ...(willBeAllDone ? { completed: true } : {}),
     },
   })
 
-  // Check if all quests are done, then update streak
-  const allDone = updated.focusDone && updated.bodyDone && updated.noNutDone
-  if (allDone) {
+  // If all quests are now done, update streak
+  if (willBeAllDone) {
     const { updateStreak } = await import("./streaks")
     await updateStreak(userId)
   }

@@ -42,6 +42,14 @@ export async function GET(request: NextRequest) {
           lte: endDate,
         },
       },
+      select: {
+        id: true,
+        date: true,
+        focusDone: true,
+        bodyDone: true,
+        noNutDone: true,
+        completed: true,
+      },
       orderBy: {
         date: "asc",
       },

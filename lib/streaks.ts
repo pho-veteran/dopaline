@@ -41,9 +41,7 @@ export async function calculateStreak(userId: string): Promise<number> {
     include: {
       dailyLogs: {
         where: {
-          focusDone: true,
-          bodyDone: true,
-          noNutDone: true,
+          completed: true,  // Use completed field for marked dates
         },
         orderBy: {
           date: "desc",
@@ -57,19 +55,41 @@ export async function calculateStreak(userId: string): Promise<number> {
   }
 
   const today = getTodayUTC()
-  let streak = 0
-  let checkDate = normalizeDate(new Date(today))
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+  const normalizedYesterday = normalizeDate(yesterday)
 
   // Create a map of completed dates for quick lookup
   const completedDates = new Set(
     user.dailyLogs.map((log: { date: Date }) => normalizeDate(log.date).toISOString())
   )
 
-  // Check consecutive days starting from today going backwards
+  // Start checking from today or yesterday (whichever is most recently completed)
+  // A streak should count if it ends today OR yesterday (allowing for timezone/end-of-day completion)
+  const todayNormalized = normalizeDate(today)
+  const hasToday = completedDates.has(todayNormalized.toISOString())
+  const hasYesterday = completedDates.has(normalizedYesterday.toISOString())
+
+  // If today is completed, start from today
+  // If only yesterday is completed, start from yesterday (streak is still active)
+  // If neither, streak is broken (return 0)
+  let startDate: Date
+  if (hasToday) {
+    startDate = todayNormalized
+  } else if (hasYesterday) {
+    startDate = normalizedYesterday
+  } else {
+    // The most recent completed date is more than 1 day ago, streak is broken
+    return 0
+  }
+
+  let streak = 0
+  let checkDate = new Date(startDate)
+
+  // Check consecutive days going backwards from the start date
   while (completedDates.has(checkDate.toISOString())) {
     streak++
     // Move to previous day
-    checkDate = new Date(checkDate)
     checkDate.setDate(checkDate.getDate() - 1)
     checkDate = normalizeDate(checkDate)
     

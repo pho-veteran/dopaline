@@ -16,7 +16,7 @@ interface DailyLog {
   bodyDone: boolean
   noNutDone: boolean
   focusRerolled: boolean
-  bodyRerolled: boolean
+  completed: boolean
 }
 
 interface QuestListProps {
